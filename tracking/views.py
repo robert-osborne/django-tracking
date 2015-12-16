@@ -70,10 +70,10 @@ def get_active_users(request):
                 } for v in active]}
         except:
             log.error('There was a problem putting all of the visitor data together:\n%s\n\n%s' % (traceback.format_exc(), locals()))
-            return HttpResponse(content='{}', mimetype='text/javascript')
+            return HttpResponse(content='{}', content_type='text/javascript')
 
         response = HttpResponse(content=JSONEncoder().encode(data),
-                                mimetype='text/javascript')
+                                content_type='text/javascript')
         response['Content-Length'] = len(response.content)
 
         return response
@@ -101,8 +101,7 @@ def friendly_time(last_update):
 
     return friendly_time or 0
 
-def display_map(request, template_name=DEFAULT_TRACKING_TEMPLATE,
-        extends_template='base.html'):
+def display_map(request, template_name=DEFAULT_TRACKING_TEMPLATE):
     """
     Displays a map of recently active users.  Requires a Google Maps API key
     and GeoIP in order to be most effective.

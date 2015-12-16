@@ -13,6 +13,7 @@ except AttributeError:
 from django.db import models
 from django.utils.translation import ugettext, ugettext_lazy as _
 from tracking import utils
+from django.contrib.gis.geoip import HAS_GEOIP
 
 USE_GEOIP = getattr(settings, 'TRACKING_USE_GEOIP', False)
 CACHE_TYPE = getattr(settings, 'GEOIP_CACHE_TYPE', 4)
@@ -107,7 +108,7 @@ class Visitor(models.Model):
     geoip_data_json = property(_get_geoip_data_json)
     def __unicode__(self):
         return u'{0} at {1} '.format(
-        self.user.username,
+        self.user,
         self.ip_address
     )
 
