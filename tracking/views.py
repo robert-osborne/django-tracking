@@ -56,21 +56,17 @@ def get_active_users(request):
         now = timezone.now()
 
         # we don't put the session key or IP address here for security reasons
-        try:
-            data = {'users': [{
-                    'id': v.id,
-                    #'user': uc(v.user),
-                    'user_agent': uc(v.user_agent),
-                    'referrer': uc(v.referrer),
-                    'url': uc(v.url),
-                    'page_views': v.page_views,
-                    'geoip': v.geoip_data_json,
-                    'last_update': (now - v.last_update).seconds,
-                    'friendly_time': ', '.join(friendly_time((now - v.last_update).seconds)),
-                } for v in active]}
-        except:
-            log.error('There was a problem putting all of the visitor data together:\n%s\n\n%s' % (traceback.format_exc(), locals()))
-            return HttpResponse(content='{}', content_type='text/javascript')
+        data = {'users': [{
+                'id': v.id,
+                #'user': uc(v.user),
+                'user_agent': uc(v.user_agent),
+                'referrer': uc(v.referrer),
+                'url': uc(v.url),
+                'page_views': v.page_views,
+                'geoip': v.geoip_data_json,
+                'last_update': (now - v.last_update).seconds,
+                'friendly_time': ', '.join(friendly_time((now - v.last_update).seconds)),
+            } for v in active]}
 
         response = HttpResponse(content=JSONEncoder().encode(data),
                                 content_type='text/javascript')
@@ -110,6 +106,5 @@ def display_map(request, template_name=DEFAULT_TRACKING_TEMPLATE):
     GOOGLE_MAPS_KEY = getattr(settings, 'GOOGLE_MAPS_KEY', None)
 
     return render_to_response(template_name,
-                              {'GOOGLE_MAPS_KEY': GOOGLE_MAPS_KEY,
-                               'template': extends_template},
+                              {'GOOGLE_MAPS_KEY': GOOGLE_MAPS_KEY},
                               context_instance=RequestContext(request))
