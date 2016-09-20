@@ -3,7 +3,7 @@ from django.utils import timezone
 import logging
 import traceback
 
-from django.contrib.gis.geoip import GeoIP, GeoIPException
+from django.contrib.gis.geoip import GeoIP, GeoIPException, HAS_GEOIP
 try:
     from django.conf import settings
     User = settings.AUTH_USER_MODEL
@@ -13,7 +13,6 @@ except AttributeError:
 from django.db import models
 from django.utils.translation import ugettext, ugettext_lazy as _
 from tracking import utils
-from django.contrib.gis.geoip import HAS_GEOIP
 
 USE_GEOIP = getattr(settings, 'TRACKING_USE_GEOIP', False)
 CACHE_TYPE = getattr(settings, 'GEOIP_CACHE_TYPE', 4)
